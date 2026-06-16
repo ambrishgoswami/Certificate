@@ -350,7 +350,7 @@ async function buildCertificatePDF({
   pdfDoc.text("DIRECTOR / HEAD", 203, sigY + 4, { align: "center" });
 
   // ── QR Code at bottom-right for verification ──
-  const verifyBaseUrl = "https://super-bavarois-b6e432.netlify.app/";
+  const verifyBaseUrl = "https://certificate-verificatio.netlify.app/";
   const verifyUrl =' ${verifyBaseUrl}?id=${encodeURIComponent(certId)}';
 
   const qrSize = 28;

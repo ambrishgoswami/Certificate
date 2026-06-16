@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Issuer Console</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="topbar">
+  <a class="brand" href="index.html">
+    <svg class="seal-mini" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="24" cy="24" r="21" stroke="#b8860b" stroke-width="2.5"/>
+      <circle cx="24" cy="24" r="14" stroke="#1b2a4a" stroke-width="2"/>
+      <path d="M17 24l5 5 9-10" stroke="#1b2a4a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Certify
+  </a>
+  <nav>
+    <button id="logout-btn" class="btn-ghost btn hidden" style="padding:8px 14px;font-size:13px;">Log out</button>
+  </nav>
+</div>
+
+<div class="wrap">
+
+  <!-- LOGIN -->
+  <div id="login-view" class="login-card">
+    <h1>Issuer login</h1>
+    <form id="login-form">
+      <div class="field">
+        <label for="login-email">Email</label>
+        <input id="login-email" type="email" required autocomplete="username">
+      </div>
+      <div class="field">
+        <label for="login-password">Password</label>
+        <input id="login-password" type="password" required autocomplete="current-password">
+      </div>
+      <p id="login-error" class="error-text"></p>
+      <button type="submit" class="btn" style="width:100%;">Log in</button>
+    </form>
+  </div>
+
+  <!-- APP -->
+  <div id="app-view" class="hidden">
+    <div class="console-header">
+      <h1>Issuer console</h1>
+    </div>
+
+    <div class="tabs">
+      <button class="tab-btn active" data-target="tab-single">Single certificate</button>
+      <button class="tab-btn" data-target="tab-bulk">Bulk (CSV)</button>
+    </div>
+
+    <!-- SINGLE -->
+    <div id="tab-single" class="tab-panel">
+      <div class="panel">
+        <h2>Create one certificate</h2>
+        <form id="single-form">
+          <div class="grid-2">
+            <div class="field">
+              <label for="s-name">Recipient name *</label>
+              <input id="s-name" type="text" required>
+            </div>
+            <div class="field">
+              <label for="s-parents">Parent's name</label>
+              <input id="s-parents" type="text" placeholder="Father / Guardian name">
+            </div>
+            <div class="field">
+              <label for="s-course">Course / Completion of *</label>
+              <input id="s-course" type="text" required>
+            </div>
+            <div class="field">
+              <label for="s-software">Software specialized</label>
+              <input id="s-software" type="text" placeholder="e.g. AutoCAD 2D&3D">
+            </div>
+            <div class="field">
+              <label for="s-org">Issuing organization / Training center</label>
+              <input id="s-org" type="text">
+            </div>
+            <div class="field">
+              <label for="s-date">Issue date</label>
+              <input id="s-date" type="date">
+            </div>
+            <div class="field">
+              <label for="s-duration">Duration (hours)</label>
+              <input id="s-duration" type="text" placeholder="e.g. 60">
+            </div>
+            <div class="field">
+              <label for="s-grade">Grade</label>
+              <input id="s-grade" type="text" placeholder="e.g. A">
+            </div>
+            <div class="field">
+              <label for="s-title">Certificate title (optional)</label>
+              <input id="s-title" type="text" placeholder="Certificate of Completion">
+            </div>
+
+            <div class="field">
+              <label for="s-photo">Student photo</label>
+              <input id="s-photo" type="file" accept="image/*">
+              <small style="color:#888;font-size:11px;">Passport-size preferred. JPG / PNG.</small>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-gold">Generate certificate</button>
+          <p id="single-status" class="status-line"></p>
+        </form>
+      </div>
+    </div>
+
+    <!-- BULK -->
+    <div id="tab-bulk" class="tab-panel hidden">
+      <div class="panel">
+        <h2>Create many certificates at once</h2>
+        <div class="csv-hint">
+          Upload a CSV with these columns:
+          <code>name, parents, course, software, org, issueDate, duration, grade, title</code>.<br>
+          Only <code>name</code> and <code>course</code> are required.<br>
+          <em>Note: bulk mode uses placeholder photo boxes (photos can't be supplied via CSV).</em>
+        </div>
+        <form id="csv-form">
+          <div class="field">
+            <label for="csv-file">CSV file</label>
+            <input id="csv-file" type="file" accept=".csv" required>
+          </div>
+          <button type="submit" class="btn btn-gold">Generate all &amp; download ZIP</button>
+          <p id="csv-status" class="status-line"></p>
+        </form>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>Recently issued</h2>
+      <div id="recent-list" class="cert-list"></div>
+    </div>
+  </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script type="module" src="js/admin.js"></script>
+<script type="module">
+  import { auth } from "./js/firebase-init.js";
+  import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+  onAuthStateChanged(auth, (user) => {
+    document.getElementById("logout-btn").classList.toggle("hidden", !user);
+  });
+</script>
+</body>
+</html>

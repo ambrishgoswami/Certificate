@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verify a Certificate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="topbar">
+  <a class="brand" href="index.html">
+    <svg class="seal-mini" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="24" cy="24" r="21" stroke="#b8860b" stroke-width="2.5"/>
+      <circle cx="24" cy="24" r="14" stroke="#1b2a4a" stroke-width="2"/>
+      <path d="M17 24l5 5 9-10" stroke="#1b2a4a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Certify
+  </a>
+  <nav>
+    <a href="admin.html">Issuer login</a>
+  </nav>
+</div>
+
+<div class="wrap">
+
+  <div class="hero">
+    <svg class="seal-large" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="24" cy="24" r="21" stroke="#b8860b" stroke-width="2"/>
+      <circle cx="24" cy="24" r="14" stroke="#1b2a4a" stroke-width="1.6"/>
+      <path d="M17 24l5 5 9-10" stroke="#1b2a4a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <h1 class="display">Verify a Certificate</h1>
+    <p class="lede">Enter a certificate ID below, or scan the QR code on the certificate itself.</p>
+  </div>
+
+  <form id="verify-form" class="verify-form">
+    <input
+      id="cert-id-input"
+      type="text"
+      placeholder="e.g. CERT-2026-AB12CD"
+      autocomplete="off"
+      aria-label="Certificate ID"
+    >
+    <button type="submit" class="btn btn-gold">Verify</button>
+  </form>
+  <p class="hint">Certificate IDs are printed on the bottom-right corner of every certificate.</p>
+
+  <div id="result" class="result"></div>
+
+  <footer class="foot">
+    <p>Issuing certificates for your organization? <a href="admin.html">Go to the issuer console</a>.</p>
+  </footer>
+</div>
+
+<script type="module" src="js/validate.js"></script>
+</body>
+</html>
